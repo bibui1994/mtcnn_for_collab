@@ -5,6 +5,7 @@ Created on Thu May  5 13:35:25 2022
 @author: habib
 """
 
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -39,14 +40,15 @@ cnn_model.add(MaxPooling2D(pool_size=(2,2)))
 cnn_model.add(Conv2D(filters=128, kernel_size=(3,3), activation='relu'))
 cnn_model.add(MaxPooling2D(pool_size=(2,2)))
 
-# cnn_model.add(Conv2D(filters=256, kernel_size=(3,3), activation='relu'))
-# cnn_model.add(MaxPooling2D(pool_size=(2,2)))
+cnn_model.add(Conv2D(filters=256, kernel_size=(3,3), activation='relu'))
+cnn_model.add(MaxPooling2D(pool_size=(2,2)))
 
 cnn_model.add(Flatten())
-cnn_model.add(Dense(256, activation='relu'))
-# cnn_model.add(Dense(512, activation='relu'))
+# cnn_model.add(Dense(256, activation='relu'))
+cnn_model.add(Dense(512, activation='relu'))
 cnn_model.add(Dropout(0.5))
 cnn_model.add(Dense(2, activation='sigmoid'))   # pour classification binaire 
+#cnn_model.add(Dense(2, activation='softmax'))
 
 cnn_model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
@@ -57,11 +59,52 @@ cnn_model.summary()
 
 history_cnn = cnn_model.fit(
  train_ds,
- #steps_per_epoch=100,
  epochs=nb_epochs,
  validation_data=validation_ds)
 
 
 
 # Save the Model
-cnn_model.save("1_MTCNN_Face_Mask_Detection/Outputs/cnn_model.h5")
+cnn_model.save("1_MTCNN_Face_Mask_Detection/Outputs/cnn_model_30_313.h5")
+path_figure='1_MTCNN_Face_Mask_Detection/figures/'
+def history_plot(history_cnn):
+      custom_params = {"axes.spines.right": False, "axes.spines.top": False}
+      sns.set_theme(context='talk', style="ticks", rc=custom_params)
+      fig = plt.figure(figsize=(12, 6))
+      plt.plot(history_cnn.history['accuracy'])
+      plt.plot(history_cnn.history['val_accuracy'])
+      plt.title('Model Dice', y=1.05)
+      plt.ylabel('Dice')
+      plt.xlabel('Epoch')
+      plt.legend(['Train Dice', 'Validation Dice'], loc = 'lower right')
+      plt.grid(linestyle='-', linewidth=0.5)
+      #plt.ylim([0.6, 1]); 
+      plt.ylim(top=1)
+      plt.xlim([0, nb_epochs])
+      plt.savefig(path_figure +  'accuracy_30_313.png',dpi=300,bbox_inches='tight')  
+      #plt.show()
+
+def loss_plot(history_cnn):
+    custom_params = {"axes.spines.right": False, "axes.spines.top": False}
+    sns.set_theme(context='talk', style="ticks", rc=custom_params)
+    fig = plt.figure(figsize=(12, 6))
+    plt.plot(history_cnn.history['loss'])
+    plt.plot(history_cnn.history['val_loss'])
+    plt.title('Model Loss', y=1.05)
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train Loss', 'Validation Loss'], loc = 'upper right')
+    plt.grid(linestyle='-', linewidth=0.5)
+    #plt.ylim([0, 1]); 
+    plt.xlim([0, nb_epochs])
+    plt.savefig(path_figure +  'loss_30_313.png',dpi=300,bbox_inches='tight')  
+    #plt.show()
+ 
+
+    
+    
+    
+history_plot(history_cnn)
+loss_plot(history_cnn)
+
+
