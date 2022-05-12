@@ -26,7 +26,7 @@ from Face_mask_detection_img_load import validation_ds
 #  la construction du model CNN
 input_dim = (256, 256, 3)
 cnn_model = Sequential()
-
+nb_epochs= 30
 # Normalisation (ramener la taille des zones de l'image à 256/256)
 cnn_model.add(Rescaling(1./255, input_shape=input_dim)) 
 # amélioration de l'arch
@@ -38,8 +38,13 @@ cnn_model.add(Conv2D(filters=64, kernel_size=(3,3), activation='relu'))
 cnn_model.add(MaxPooling2D(pool_size=(2,2)))
 cnn_model.add(Conv2D(filters=128, kernel_size=(3,3), activation='relu'))
 cnn_model.add(MaxPooling2D(pool_size=(2,2)))
+
+# cnn_model.add(Conv2D(filters=256, kernel_size=(3,3), activation='relu'))
+# cnn_model.add(MaxPooling2D(pool_size=(2,2)))
+
 cnn_model.add(Flatten())
 cnn_model.add(Dense(256, activation='relu'))
+# cnn_model.add(Dense(512, activation='relu'))
 cnn_model.add(Dropout(0.5))
 cnn_model.add(Dense(2, activation='sigmoid'))   # pour classification binaire 
 
@@ -52,8 +57,8 @@ cnn_model.summary()
 
 history_cnn = cnn_model.fit(
  train_ds,
- steps_per_epoch=100,
- epochs=30,
+ #steps_per_epoch=100,
+ epochs=nb_epochs,
  validation_data=validation_ds)
 
 

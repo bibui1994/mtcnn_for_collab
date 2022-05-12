@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 
 from Face_Mask_Detection_model import history_cnn
-
+from Face_Mask_Detection_model import nb_epochs
 # Plot accuracy, dice and loss
 def history_plot(history_cnn):
   custom_params = {"axes.spines.right": False, "axes.spines.top": False}
@@ -25,9 +25,9 @@ def history_plot(history_cnn):
   plt.grid(linestyle='-', linewidth=0.5)
   #plt.ylim([0.6, 1]); 
   plt.ylim(top=1)
-  plt.xlim([0, 11])
-  plt.show()
+  plt.xlim([0, nb_epochs])
   plt.savefig("1_MTCNN_Face_Mask_Detection/figures/accuracy.png")  
+  plt.show()
 
 def loss_plot(history_cnn):
   custom_params = {"axes.spines.right": False, "axes.spines.top": False}
@@ -41,10 +41,10 @@ def loss_plot(history_cnn):
   plt.legend(['Train Loss', 'Validation Loss'], loc = 'upper right')
   plt.grid(linestyle='-', linewidth=0.5)
   #plt.ylim([0, 1]); 
-  plt.xlim([0, 11])
-  plt.show()
+  plt.xlim([0, nb_epochs])
   plt.savefig("1_MTCNN_Face_Mask_Detection/figures/loss.png")  
-  
+  plt.show()
+ 
   def dice_plot(history_cnn):
     custom_params = {"axes.spines.right": False, "axes.spines.top": False}
     sns.set_theme(context='talk', style="ticks", rc=custom_params)
@@ -57,9 +57,10 @@ def loss_plot(history_cnn):
     plt.legend(['Train Dice', 'Validation Dice'], loc = 'upper right')
     plt.grid(linestyle='-', linewidth=0.5)
     #plt.ylim([0, 1]); 
-    plt.xlim([0, 11])
-    plt.show()
+    plt.xlim([0, nb_epochs])
     plt.savefig("1_MTCNN_Face_Mask_Detection/figures/dice.png")  
+    plt.show()
+    
     
     
   history_plot(history_cnn)
